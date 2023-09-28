@@ -1,0 +1,16 @@
+{
+  "name": "Actsray OBS",
+  "version": "0.1.0",
+  "description": "ActsRay OBS Plugin",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "ActsRay",
+  "license": "Own",
+  "dependencies": {
+    "web3": "^1.8.0",
+    "web3-providers-ws": "^1.0.0",
+    "websocket": "^1.0.0"
+  }
+}
