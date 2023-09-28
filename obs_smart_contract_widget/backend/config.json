@@ -1,6 +1,6 @@
 {
     "ethereum_node_ws_url":"wss://sepolia.infura.io/ws/v3/<YOUR_API_KEY>",
-    "contractAddress":"0xbC39B62a7aA896CDbA065B5C3b1351a706A7883C",
+    "contractAddress":"0x73cA941Ab063d82ADa3A3A1F83F29D884027B1E8",
     "local_port":"8765",
     "path_to_serv_frontend":"../frontend/test_widget/"
 }
