@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Widget</title>
+    <style>
+        /* CSS-Styling für das Widget */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #widget-container {
+            background-color: #33333380;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .widget-image{
+            width: 100px;
+        }
+        .widget-highlight-text{
+            color:teal;
+
+
+        }
+        #donation-amount{
+            font-size: 2rem;
+        }
+        .fadingDiv {
+            opacity: 0; /* Initially, set the opacity to 0 (fully transparent) */
+            transition: opacity 0.5s; /* Apply a transition effect to opacity */
+        }
+
+        .hidden {
+            display: none; /* Hide the element by default */
+        }
+    </style>
+</head>
+<body>
+    <div id="widget-container" class="fadingDiv hidden">
+        <img class="widget-image" src="icon.gif"></img>
+        <h2 class="swinging-text">Thank you <span id="username" class="widget-highlight-text">Teal Bean</span>, for your Donation!</h2>
+        <p id="donation-amount"></p>
+        <p id="donation-message"></p>
+    </div>
+
+    <!-- JavaScript, um die Spendeninformationen zu aktualisieren -->
+    <script>
+        // Hier kannst du die Funktion verwenden, um die Spendeninformationen zu aktualisieren
+        window.actsray_message = function (username, amount, message) {
+            const donationAmount = document.getElementById('donation-amount');
+            const donationMessage = document.getElementById('donation-message');
+            const donationContainer = document.getElementById('widget-container');
+            const donationUsername = document.getElementById('username');
+            donationUsername.innerText = username;
+            donationAmount.innerText = amount + ' F';
+            donationMessage.innerText = '' + message;
+            fadeIn(donationContainer);
+            readText(username+ " spendet " + amount + " Finney! Und sagt:"+message);
+        }
+
+
+        function fadeIn(element) {
+            element.classList.remove("hidden"); // Remove the "hidden" class to make it visible
+            setTimeout(() => {
+                element.style.opacity = "1"; // Set the opacity to 1 for a fade-in effect
+            }, 10); // Use a slight delay to ensure the "display" change occurs first
+            setTimeout(function () {
+                const donationContainer = document.getElementById('widget-container');
+                fadeOut(donationContainer);
+            }, 5000);
+        }
+
+        function fadeOut(element) {
+            element.style.opacity = "0"; // Set the opacity to 0 for a fade-out effect
+            setTimeout(() => {
+                element.classList.add("hidden"); // Add the "hidden" class to hide the element
+            }, 500); // Use the same duration as the transition for consistency
+        }
+        function readText(text) {
+            console.log(text);
+            const speechSynthesis = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+
+        // Beispiel: Die Spendeninformationen aktualisieren
+        const donationContainer = document.getElementById('widget-container');
+        //setInterval(function(){
+        //    window.actsray_message("Micro Zero",50, "Danke für deinen Content!");
+        //},20000);
+
+        const socket = new WebSocket("ws://localhost:8765");
+
+        socket.onmessage = function(event) {
+            var jsonOBJ = JSON.parse(event.data);
+            var adresse = jsonOBJ["adresse"];
+            var value = jsonOBJ["value"]/1000000000000000;
+            var msg = jsonOBJ["message"];
+            window.actsray_message(adresse,value, msg);
+        };
+    </script>
+</body>
+</html>
