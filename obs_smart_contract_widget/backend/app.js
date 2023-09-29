@@ -19,13 +19,11 @@ const wsServer = new WebSocket({
 const wsProvider = new Web3WsProvider(settings.ethereum_node_ws_url);
 
 const web3 = new Web3(wsProvider);
+const contract = new web3.eth.Contract(contractABI, settings.contractAddress);
 
 wsServer.on('request', (request) => {
   console.log("OBS connected");
   const connection = request.accept(null, request.origin);
-
-  const contract = new web3.eth.Contract(contractABI, settings.contractAddress);
-
   contract.events.DonationEvent()
     .on('data', (event) => {
       var msg = {"address": event.returnValues._from, "value": event.returnValues._value, "message": event.returnValues._msg};
