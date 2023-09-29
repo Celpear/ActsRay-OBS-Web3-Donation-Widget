@@ -4,6 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 /** 
  * @title Donation Tool
+ * @dev Implements voting process along with vote delegation
  */
 contract EmitContract {
     address private  owner;
@@ -13,8 +14,12 @@ contract EmitContract {
     }
 
     function donation(string memory message) public payable{
-        require(msg.value >= 0.00016 ether,"Too little for a donation.");
+        // Allow charging the Smart Contract with amounts below 0.00016 ether without triggering the event.
+        // This measure is in place to prevent spam during livestreams.
+        require(msg.value >0);
+        if(msg.value >= 0.00016 ether){
         emit DonationEvent(msg.sender,msg.value,message);
+        }
     }
 
     function payout() public{
