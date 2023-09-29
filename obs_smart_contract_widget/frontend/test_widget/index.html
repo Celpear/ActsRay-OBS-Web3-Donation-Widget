@@ -95,7 +95,7 @@
 
         socket.onmessage = function(event) {
             var jsonOBJ = JSON.parse(event.data);
-            var adresse = jsonOBJ["adresse"];
+            var adresse = jsonOBJ["address"];
             var value = jsonOBJ["value"]/1000000000000000;
             var msg = jsonOBJ["message"];
             window.actsray_message(adresse,value, msg);
